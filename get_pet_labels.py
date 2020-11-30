@@ -42,7 +42,7 @@ def get_pet_labels(image_dir):
     """
     
     # Create the filename list using listdir
-    filename_list = listdir("pet_images/")
+    filename_list = listdir(image_dir)
 
     # create our empty results_dic dictionary for use later
     results_dic = dict()

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/classify_images.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:                                 
+# PROGRAMMER: Jared Teller
+# DATE CREATED: 11/30/2020                                
 # REVISED DATE: 
 # PURPOSE: Create a function classify_images that uses the classifier function 
 #          to create the classifier labels and then compares the classifier 
@@ -65,4 +65,54 @@ def classify_images(images_dir, results_dic, model):
      Returns:
            None - results_dic is mutable data type so no return needed.         
     """
+
+    # iterate through the input dictionary of labels
+    for key in results_dic:
+        image_path = images_dir + key
+        # use classifier function to get labels
+        lbl_classified = classifier(image_path, model)
+
+        # preproccess the classified label to fix the formatting of it
+        model_label = format_label(lbl_classified)
+    
+        #defines the truth
+        truth = results_dic[key][0]
+    # compare pet image label and classifier label to see if they match using in
+        
+        #print("Key",key)
+        #print("Truth",truth)
+        #print("model label",model_label)
+        #print(results_dic)
+
+
+        if truth in model_label:
+            to_add = [model_label, 1]
+            #print("Woo\n\n")
+            # extend list to include 1 or else 0
+            results_dic[key].extend(to_add)
+            #results_dic[key][2].extend(1)
+        else:
+            to_add = [model_label, 0]
+            results_dic[key].extend(to_add)
+         #   results_dic[key][2].extend(0)
     None 
+
+# Custom function to format the model labels into the correct formatting, which is no whitespace at start or end and all lower case
+def format_label(lbl_to_fmt):
+    """
+    Strips a pet label down to the required format: no whitespace at start or end and all lower case
+
+    Params:
+        lbl_to_fmt - the word to be processed
+        Type (str)
+
+    Returns:
+        pet_name - the resulting pet name after everything has been stripped down
+        Type (str)
+    """
+    # set to lower case
+    lbl_lowercase = lbl_to_fmt.lower()
+
+    lbl_stripped = lbl_lowercase.strip()
+
+    return lbl_stripped

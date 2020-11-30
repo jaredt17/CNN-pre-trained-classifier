@@ -49,17 +49,23 @@ def get_pet_labels(image_dir):
 
     # we need to fix the format of the pet image image labels here
     for idx in range(0, len(filename_list), 1):
-        if filename_list[idx] not in results_dic:
-            pet_name_fixed = strip_label(filename_list[idx])
-            results_dic[filename_list[idx]] = pet_name_fixed
-        else:
-            print("** Warning: Key=", filename_list[idx], "already exists in results_dic with value =", results_dic[filename_list[idx]])
+        
+        # skip bad file names
+        if filename_list[idx][0] != ".":
+
+            pet_label = ""
+            pet_label = strip_label(filename_list[idx])
+
+            if filename_list[idx] not in results_dic:
+                results_dic[filename_list[idx]] = [pet_label]
+            else:
+                print("** Warning: Key=", filename_list[idx], "already exists in results_dic with value =", results_dic[filename_list[idx]])
 
     # For testing
     #Iterating through a dictionary printing all keys & their associated values
     #print("\nPrinting all key-value pairs in dictionary results_dic:")
     #for key, value in results_dic.items():
-    #   print("Filename=", key, "   Pet Label=", value)
+     #  print("Filename=", key, "   Pet Label=", value)
 
     # Replace None with the results_dic dictionary that you created with this
     # function
@@ -85,14 +91,14 @@ def strip_label(lbl_to_strip):
     split_pet_label = lower_pet_label.split("_")
 
     # blank pet name
-    pet_name = ""
+    blank_pet_name = ""
 
     # Loops to check if word in pet name is only aplhabetic characters, if true append word
     for word in split_pet_label:
         if word.isalpha():
-            pet_name += word + " "
+            blank_pet_name += word + " "
 
     # remove whitespace that is trailing or at the beginning
-    pet_name = pet_name.strip()
+    pet_name = blank_pet_name.strip()
 
     return pet_name

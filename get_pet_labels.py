@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/get_pet_labels.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:                                  
+# PROGRAMMER: Jared Teller
+# DATE CREATED: 11/30/2020                       
 # REVISED DATE: 
 # PURPOSE: Create the function get_pet_labels that creates the pet labels from 
 #          the image's filename. This function inputs: 
@@ -40,6 +40,59 @@ def get_pet_labels(image_dir):
       List. The list contains for following item:
          index 0 = pet image label (string)
     """
+    
+    # Create the filename list using listdir
+    filename_list = listdir("pet_images/")
+
+    # create our empty results_dic dictionary for use later
+    results_dic = dict()
+
+    # we need to fix the format of the pet image image labels here
+    for idx in range(0, len(filename_list), 1):
+        if filename_list[idx] not in results_dic:
+            pet_name_fixed = strip_label(filename_list[idx])
+            results_dic[filename_list[idx]] = pet_name_fixed
+        else:
+            print("** Warning: Key=", filename_list[idx], "already exists in results_dic with value =", results_dic[filename_list[idx]])
+
+    # For testing
+    #Iterating through a dictionary printing all keys & their associated values
+    #print("\nPrinting all key-value pairs in dictionary results_dic:")
+    #for key, value in results_dic.items():
+    #   print("Filename=", key, "   Pet Label=", value)
+
     # Replace None with the results_dic dictionary that you created with this
     # function
-    return None
+    return results_dic
+
+# Custom function to strip down the pet image labels
+def strip_label(lbl_to_strip):
+    """
+    Strips a pet label down to the required format.
+
+    Params:
+        lbl_to_strip - the word to be processed
+        Type (str)
+
+    Returns:
+        pet_name - the resulting pet name after everything has been stripped down
+        Type (str)
+    """
+    # set to lower case
+    lower_pet_label = lbl_to_strip.lower()
+
+    # split lower case string by _ to break into words
+    split_pet_label = lower_pet_label.split("_")
+
+    # blank pet name
+    pet_name = ""
+
+    # Loops to check if word in pet name is only aplhabetic characters, if true append word
+    for word in split_pet_label:
+        if word.isalpha():
+            pet_name += word + " "
+
+    # remove whitespace that is trailing or at the beginning
+    pet_name = pet_name.strip()
+
+    return pet_name

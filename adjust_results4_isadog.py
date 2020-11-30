@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/adjust_results4_isadog.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:                                 
+# PROGRAMMER: Jared Teller
+# DATE CREATED: 11/30/2020                      
 # REVISED DATE: 
 # PURPOSE: Create a function adjust_results4_isadog that adjusts the results 
 #          dictionary to indicate whether or not the pet image label is of-a-dog, 
@@ -67,4 +67,72 @@ def adjust_results4_isadog(results_dic, dogfile):
     Returns:
            None - results_dic is mutable data type so no return needed.
     """           
+
+    # create the dog names dictionary
+    dognames_dic = dict()
+
+    with open(dogfile) as f:
+        for line in f:
+            dog_name = line.rstrip()
+            if dog_name not in dognames_dic:
+                # good continue
+                dognames_dic[dog_name] = 1
+
+            else:
+                # bad give warning
+                print("Warning! There shouldn't be any duplicates in the dognames.txt file.")
+      
+    #print(dognames_dic)
+
+    # Add to whether pet labels & classifier labels are dogs by appending
+    # two items to end of value(List) in results_dic. 
+    # List Index 3 = whether(1) or not(0) Pet Image Label is a dog AND 
+    # List Index 4 = whether(1) or not(0) Classifier Label is a dog
+    # How - iterate through results_dic if labels are found in dognames_dic
+    # then label "is a dog" index3/4=1 otherwise index3/4=0 "not a dog"
+    for key in results_dic:
+        #print(results_dic[key][0])
+        # Pet Image Label IS of Dog (e.g. found in dognames_dic)
+        if results_dic[key][0] in dognames_dic:
+            
+            # Classifier Label IS image of Dog (e.g. found in dognames_dic)
+            # appends (1, 1) because both labels are dogs
+            if results_dic[key][1] in dognames_dic:
+                results_dic[key].extend((1, 1))
+
+            # TODO: 4c. REPLACE pass BELOW with CODE that adds the following to
+            #           results_dic dictionary for the key indicated by the 
+            #           variable key - append (1,0) to the value using 
+            #           the extend list function. This indicates
+            #           the pet label is-a-dog, classifier label is-NOT-a-dog. 
+            #                              
+            # Classifier Label IS NOT image of dog (e.g. NOT in dognames_dic)
+            # appends (1,0) because only pet label is a dog
+            else:
+                results_dic[key].extend((1, 0))
+
+        # Pet Image Label IS NOT a Dog image (e.g. NOT found in dognames_dic)
+        else:
+            # TODO: 4d. REPLACE pass BELOW with CODE that adds the following to
+            #           results_dic dictionary for the key indicated by the 
+            #           variable key - append (0,1) to the value uisng
+            #           the extend list function. This indicates
+            #           the pet label is-NOT-a-dog, classifier label is-a-dog. 
+            #                              
+            # Classifier Label IS image of Dog (e.g. found in dognames_dic)
+            # appends (0, 1)because only Classifier labe is a dog
+            if results_dic[key][1] in dognames_dic:
+                results_dic[key].extend((0, 1))
+
+            # TODO: 4e. REPLACE pass BELOW with CODE that adds the following to
+            #           results_dic dictionary for the key indicated by the 
+            #           variable key - append (0,0) to the value using the 
+            #           extend list function. This indicates
+            #           the pet label is-NOT-a-dog, classifier label is-NOT-a-dog. 
+            #                                              
+            # Classifier Label IS NOT image of Dog (e.g. NOT in dognames_dic)
+            # appends (0, 0) because both labels aren't dogs
+            else:
+                results_dic[key].extend((0, 0))
+
     None

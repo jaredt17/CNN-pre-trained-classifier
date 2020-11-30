@@ -95,6 +95,9 @@ def classify_images(images_dir, results_dic, model):
             to_add = [model_label, 0]
             results_dic[key].extend(to_add)
          #   results_dic[key][2].extend(0)
+
+        # print(results_dic[key][0])
+
     None 
 
 # Custom function to format the model labels into the correct formatting, which is no whitespace at start or end and all lower case

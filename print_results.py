@@ -81,9 +81,11 @@ def print_results(results_dic, results_stats_dic, model,
                 if results_dic[key][3] == 1:
                     # was a dog and missclassified as not a dog
                     print("Pet Image Label is a Dog - Classified as NOT-A-DOG")
+                    print("Real: {:>26}     Classifier: {:>30}".format(results_dic[key][0], results_dic[key][1]))
                 else:
                     # was not a dog and classified as a dog
                     print("Pet Image Label is NOT-a-Dog - Classified as a-DOG")
+                    print("Real: {:>26}     Classifier: {:>30}".format(results_dic[key][0], results_dic[key][1]))
     
     if (print_incorrect_breed and (results_stats_dic['n_correct_dogs'] != results_stats_dic['n_correct_breed'])):
         print("\nINCORRECT Dog Breed Assignment:")
